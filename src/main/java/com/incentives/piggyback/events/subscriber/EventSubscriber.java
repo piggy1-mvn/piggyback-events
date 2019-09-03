@@ -1,6 +1,7 @@
 package com.incentives.piggyback.events.subscriber;
 
 import com.google.cloud.pubsub.v1.AckReplyConsumer;
+import com.incentives.piggyback.common.pubsub.SubscriberHelper;
 import com.incentives.piggyback.events.EventsApplication;
 import com.incentives.piggyback.events.service.EventService;
 import com.incentives.piggyback.events.utils.Constant;
@@ -18,6 +19,8 @@ import org.springframework.integration.channel.DirectChannel;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
 
 @Service
 public class EventSubscriber {
@@ -51,6 +54,15 @@ public class EventSubscriber {
     @Bean
     public PubSubInboundChannelAdapter messageChannelAdapterForLocation(
             @Qualifier("pubsubInputChannelForLocation") MessageChannel inputChannel, PubSubTemplate pubSubTemplate) {
+
+        try {
+            if(!SubscriberHelper.checkIfSubscriberExists(Constant.EVENT_SERVICE_LOCATION_SUBSCRIBER, Constant.LOCATION_PUBLISHER_TOPIC)) {
+                    SubscriberHelper.createSubscriber(Constant.EVENT_SERVICE_LOCATION_SUBSCRIBER, Constant.LOCATION_PUBLISHER_TOPIC);
+            }
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage());
+        }
+
         PubSubInboundChannelAdapter adapter =
                 new PubSubInboundChannelAdapter(pubSubTemplate, Constant.EVENT_SERVICE_LOCATION_SUBSCRIBER);
         adapter.setOutputChannel(inputChannel);
@@ -61,6 +73,15 @@ public class EventSubscriber {
     @Bean
     public PubSubInboundChannelAdapter messageChannelAdapterForUser(
             @Qualifier("pubsubInputChannelForUser") MessageChannel inputChannel, PubSubTemplate pubSubTemplate) {
+
+        try {
+            if(!SubscriberHelper.checkIfSubscriberExists(Constant.EVENT_SERVICE_USER_SUBSCRIBER, Constant.USER_PUBLISHER_TOPIC)) {
+                    SubscriberHelper.createSubscriber(Constant.EVENT_SERVICE_USER_SUBSCRIBER, Constant.USER_PUBLISHER_TOPIC);
+            }
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage());
+        }
+
         PubSubInboundChannelAdapter adapter =
                 new PubSubInboundChannelAdapter(pubSubTemplate, Constant.EVENT_SERVICE_USER_SUBSCRIBER);
         adapter.setOutputChannel(inputChannel);
@@ -71,6 +92,15 @@ public class EventSubscriber {
     @Bean
     public PubSubInboundChannelAdapter messageChannelAdapterForPartner(
             @Qualifier("pubsubInputChannelForPartner") MessageChannel inputChannel, PubSubTemplate pubSubTemplate) {
+
+        try {
+            if(!SubscriberHelper.checkIfSubscriberExists(Constant.EVENT_SERVICE_PARTNER_SUBSCRIBER, Constant.PARTNER_PUBLISHER_TOPIC)) {
+                    SubscriberHelper.createSubscriber(Constant.EVENT_SERVICE_PARTNER_SUBSCRIBER, Constant.PARTNER_PUBLISHER_TOPIC);
+            }
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage());
+        }
+
         PubSubInboundChannelAdapter adapter =
                 new PubSubInboundChannelAdapter(pubSubTemplate, Constant.EVENT_SERVICE_PARTNER_SUBSCRIBER);
         adapter.setOutputChannel(inputChannel);
@@ -81,6 +111,15 @@ public class EventSubscriber {
     @Bean
     public PubSubInboundChannelAdapter messageChannelAdapterForOffers(
             @Qualifier("pubsubInputChannelForOffers") MessageChannel inputChannel, PubSubTemplate pubSubTemplate) {
+
+        try {
+            if(!SubscriberHelper.checkIfSubscriberExists(Constant.EVENT_SERVICE_OFFERS_SUBSCRIBER, Constant.OFFERS_PUBLISHER_TOPIC)) {
+                    SubscriberHelper.createSubscriber(Constant.EVENT_SERVICE_OFFERS_SUBSCRIBER, Constant.OFFERS_PUBLISHER_TOPIC);
+            }
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage());
+        }
+
         PubSubInboundChannelAdapter adapter =
                 new PubSubInboundChannelAdapter(pubSubTemplate, Constant.EVENT_SERVICE_OFFERS_SUBSCRIBER);
         adapter.setOutputChannel(inputChannel);
@@ -91,6 +130,15 @@ public class EventSubscriber {
     @Bean
     public PubSubInboundChannelAdapter messageChannelAdapterForNotification(
             @Qualifier("pubsubInputChannelForNotification") MessageChannel inputChannel, PubSubTemplate pubSubTemplate) {
+
+        try {
+            if(!SubscriberHelper.checkIfSubscriberExists(Constant.EVENT_SERVICE_NOTIFICATION_SUBSCRIBER, Constant.NOTIFICATION_PUBLISHER_TOPIC)) {
+                    SubscriberHelper.createSubscriber(Constant.EVENT_SERVICE_NOTIFICATION_SUBSCRIBER, Constant.OFFERS_PUBLISHER_TOPIC);
+            }
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage());
+        }
+
         PubSubInboundChannelAdapter adapter =
                 new PubSubInboundChannelAdapter(pubSubTemplate, Constant.EVENT_SERVICE_NOTIFICATION_SUBSCRIBER);
         adapter.setOutputChannel(inputChannel);

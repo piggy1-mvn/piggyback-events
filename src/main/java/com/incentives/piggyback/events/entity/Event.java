@@ -10,6 +10,10 @@ public class Event extends ResourceSupport {
     private String partnerId;
     private String sourceId;
 
+    public Event() {
+        
+    }
+
     public Event(String eventId, String eventType, String timeStamp, String partnerId, String sourceId) {
         this.eventId = eventId;
         this.eventType = eventType;

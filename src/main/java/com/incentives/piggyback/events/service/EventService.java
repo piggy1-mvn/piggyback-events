@@ -1,6 +1,5 @@
 package com.incentives.piggyback.events.service;
 
-import com.incentives.piggyback.events.entity.Event;
 import com.incentives.piggyback.events.exception.PiggyException;
 
 public interface EventService {

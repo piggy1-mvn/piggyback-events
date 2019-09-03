@@ -6,8 +6,6 @@ import com.incentives.piggyback.events.entity.Event;
 import com.incentives.piggyback.events.exception.ExceptionResponseCode;
 import com.incentives.piggyback.events.exception.PiggyException;
 import com.incentives.piggyback.events.repository.EventRepository;
-import com.incentives.piggyback.events.service.EventService;
-import com.incentives.piggyback.events.utils.CommonUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
