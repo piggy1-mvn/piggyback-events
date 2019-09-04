@@ -1,20 +1,15 @@
 package com.incentives.piggyback.events;
 
+import java.io.IOException;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
-@RestController
 public class EventsApplication {
 
-	@RequestMapping("/")
-	public String home() {
-		return "Hello World on Docker";
-	}
+    public static void main(String[] args) throws IOException {
+        SpringApplication.run(EventsApplication.class, args);
+    }
 
-	public static void main(String[] args) {
-		SpringApplication.run(EventsApplication.class, args);
-	}
 }
