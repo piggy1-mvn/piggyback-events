@@ -11,8 +11,8 @@ public interface Constant {
 	String EVENT_SERVICE_NOTIFICATION_SUBSCRIBER = "notificationSubscriber";
 
 	String LOCATION_PUBLISHER_TOPIC = "locationEvents";
-	String USER_PUBLISHER_TOPIC = "locationEvents";
-	String PARTNER_PUBLISHER_TOPIC = "locationEvents";
-	String OFFERS_PUBLISHER_TOPIC = "locationEvents";
-	String NOTIFICATION_PUBLISHER_TOPIC = "locationEvents";
+	String USER_PUBLISHER_TOPIC = "userEvents";
+	String PARTNER_PUBLISHER_TOPIC = "partnerEvents";
+	String OFFERS_PUBLISHER_TOPIC = "offersEvents";
+	String NOTIFICATION_PUBLISHER_TOPIC = "notificationEvents";
 }
