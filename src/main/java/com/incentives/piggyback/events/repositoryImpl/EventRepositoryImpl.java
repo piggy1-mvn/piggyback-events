@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 
-@Repository(value = "partnerOrderRepositoryImpl")
+@Repository
 @Transactional(readOnly = true)
 public class EventRepositoryImpl implements EventRepositoryCustom {
     private final MongoTemplate mongoTemplate;
