@@ -8,7 +8,8 @@ public enum ExceptionResponseCode {
 	MISSING_HEADER_KEY(4008,"Your request could not be served by the system. Please try again!"),
 	TOKEN_REQUIRED(4009, "Token is missing or is incorrect"),
 	USER_DATA_NOT_FOUND_IN_REQUEST(4012, "User data not found in request."),
-	UPLOADING_FILE_FAILED(4013, "Your request could not be served by the system. Please try again.");
+	UPLOADING_FILE_FAILED(4013, "Your request could not be served by the system. Please try again."),
+	USER_DATA_NOT_FOUND_IN_RESPONSE(4014, "User data not found in response.");
 
 	private int code;
 
