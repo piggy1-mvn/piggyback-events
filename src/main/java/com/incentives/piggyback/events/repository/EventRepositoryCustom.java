@@ -17,4 +17,5 @@ public interface EventRepositoryCustom {
     List<EventEntity> getEventsByEventAllFilters(String eventType, String PartnerId, Date fromDate, Date toDate);
 
     List<EventEntity> getEventsByTimeStamp(Date fromDate, Date toDate);
+    
 }
