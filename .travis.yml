@@ -26,9 +26,9 @@ script:
 - docker push piggy1/events
 - mvn -Pprod clean verify
 - docker build -t events-prod .
-- if [ "$TRAVIS_BRANCH" = "master" AND "$TRAVIS_EVENT_TYPE" = "push" ]; then docker tag events-prod gcr.io/absolute-text-251105/piggy1-events:v1; fi
-- if [ "$TRAVIS_BRANCH" = "master" AND "$TRAVIS_EVENT_TYPE" = "push" ]; then cat secret-storage.json | docker login -u _json_key --password-stdin https://gcr.io; fi
-- if [ "$TRAVIS_BRANCH" = "master" AND "$TRAVIS_EVENT_TYPE" = "push" ]; then docker push gcr.io/absolute-text-251105/piggy1-events:v1; fi
+- if [ $TRAVIS_BRANCH == "master" && $TRAVIS_EVENT_TYPE == "push" ]; then docker tag events-prod gcr.io/absolute-text-251105/piggy1-events:v1; fi
+- if [ $TRAVIS_BRANCH == "master" && $TRAVIS_EVENT_TYPE == "push" ]; then cat secret-storage.json | docker login -u _json_key --password-stdin https://gcr.io; fi
+- if [ $TRAVIS_BRANCH == "master" && $TRAVIS_EVENT_TYPE == "push" ]; then docker push gcr.io/absolute-text-251105/piggy1-events:v1; fi
 
 after_success:
 - bash <(curl -s https://codecov.io/bash)
