@@ -22,9 +22,9 @@ spec:
         imagePullPolicy: Always
         ports:
         - name: piggy-evens
-          containerPort: 8083
+          containerPort: 8082
         readinessProbe:
           httpGet:
             path: /swagger-ui.html
-            port: 8083
+            port: 8082
 status: {}
