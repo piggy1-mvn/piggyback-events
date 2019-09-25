@@ -20,13 +20,13 @@ public class EventsController {
     private EventService eventService;
 
     @GetMapping
-    public ResponseEntity<RestResponse<List<EventEntity>>> getEvent(
+    public ResponseEntity<List<EventEntity>> getEvent(
             @RequestParam(name ="eventType", required = false) String eventType,
             @RequestParam(name="partnerId", required = false) String partnerId,
             @RequestParam(name="timeStamp", required = false)  @DateTimeFormat(pattern="yyyy-MM-dd") Date timestamp) {
 
         List<EventEntity> events = eventService.getEvents(eventType,partnerId,timestamp);
-        return RestUtils.successResponse(events);
+        return ResponseEntity.ok(events);
     }
 
 
