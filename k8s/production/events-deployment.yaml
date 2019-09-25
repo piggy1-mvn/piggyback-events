@@ -1,0 +1,30 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: piggyback-events-production
+  namespace: production
+spec:
+  replicas: 1
+  progressDeadlineSeconds: 10
+  template:
+    metadata:
+      labels:
+        app: piggyback-events
+        env: canary
+    spec:
+      containers:
+      - image: gcr.io/absolute-text-251105/piggy1-events:v2
+        name: piggyback-prod-runner-events
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        imagePullPolicy: Always
+        ports:
+        - name: piggy-evens
+          containerPort: 8082
+        readinessProbe:
+          httpGet:
+            path: /swagger-ui.html
+            port: 8082
+status: {}
