@@ -14,6 +14,7 @@ import org.springframework.cloud.gcp.pubsub.integration.AckMode;
 import org.springframework.cloud.gcp.pubsub.integration.inbound.PubSubInboundChannelAdapter;
 import org.springframework.cloud.gcp.pubsub.support.GcpPubSubHeaders;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.env.Environment;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.integration.channel.DirectChannel;
 import org.springframework.messaging.MessageChannel;
@@ -25,145 +26,148 @@ import java.io.IOException;
 @Service
 public class EventSubscriber {
 
-    private static final Log LOGGER = LogFactory.getLog(EventsApplication.class);
+	private static final Log LOGGER = LogFactory.getLog(EventsApplication.class);
 
-    @Autowired
-    private EventService eventService;
+	@Autowired
+	private Environment env;
 
-    @Bean
-    public MessageChannel pubsubInputChannelForLocation() {
-        return new DirectChannel();
-    }
-    @Bean
-    public MessageChannel pubsubInputChannelForOffers() {
-        return new DirectChannel();
-    }
-    @Bean
-    public MessageChannel pubsubInputChannelForUser() {
-        return new DirectChannel();
-    }
-    @Bean
-    public MessageChannel pubsubInputChannelForNotification() {
-        return new DirectChannel();
-    }
-    @Bean
-    public MessageChannel pubsubInputChannelForPartner() {
-        return new DirectChannel();
-    }
+	@Autowired
+	private EventService eventService;
 
-    @Bean
-    public PubSubInboundChannelAdapter messageChannelAdapterForLocation(
-            @Qualifier("pubsubInputChannelForLocation") MessageChannel inputChannel, PubSubTemplate pubSubTemplate) {
+	@Bean
+	public MessageChannel pubsubInputChannelForLocation() {
+		return new DirectChannel();
+	}
+	@Bean
+	public MessageChannel pubsubInputChannelForOffers() {
+		return new DirectChannel();
+	}
+	@Bean
+	public MessageChannel pubsubInputChannelForUser() {
+		return new DirectChannel();
+	}
+	@Bean
+	public MessageChannel pubsubInputChannelForNotification() {
+		return new DirectChannel();
+	}
+	@Bean
+	public MessageChannel pubsubInputChannelForPartner() {
+		return new DirectChannel();
+	}
 
-        PubSubInboundChannelAdapter adapter =
-                new PubSubInboundChannelAdapter(pubSubTemplate, Constant.EVENT_SERVICE_LOCATION_SUBSCRIBER);
-        adapter.setOutputChannel(inputChannel);
-        adapter.setAckMode(AckMode.MANUAL);
-        return adapter;
-    }
+	@Bean
+	public PubSubInboundChannelAdapter messageChannelAdapterForLocation(
+			@Qualifier("pubsubInputChannelForLocation") MessageChannel inputChannel, PubSubTemplate pubSubTemplate) {
 
-    @Bean
-    public PubSubInboundChannelAdapter messageChannelAdapterForUser(
-            @Qualifier("pubsubInputChannelForUser") MessageChannel inputChannel, PubSubTemplate pubSubTemplate) {
+		PubSubInboundChannelAdapter adapter =
+				new PubSubInboundChannelAdapter(pubSubTemplate, env.getProperty(Constant.EVENT_SERVICE_LOCATION_SUBSCRIBER));
+		adapter.setOutputChannel(inputChannel);
+		adapter.setAckMode(AckMode.MANUAL);
+		return adapter;
+	}
 
-        PubSubInboundChannelAdapter adapter =
-                new PubSubInboundChannelAdapter(pubSubTemplate, Constant.EVENT_SERVICE_USER_SUBSCRIBER);
-        adapter.setOutputChannel(inputChannel);
-        adapter.setAckMode(AckMode.MANUAL);
-        return adapter;
-    }
+	@Bean
+	public PubSubInboundChannelAdapter messageChannelAdapterForUser(
+			@Qualifier("pubsubInputChannelForUser") MessageChannel inputChannel, PubSubTemplate pubSubTemplate) {
 
-    @Bean
-    public PubSubInboundChannelAdapter messageChannelAdapterForPartner(
-            @Qualifier("pubsubInputChannelForPartner") MessageChannel inputChannel, PubSubTemplate pubSubTemplate) {
+		PubSubInboundChannelAdapter adapter =
+				new PubSubInboundChannelAdapter(pubSubTemplate, env.getProperty(Constant.EVENT_SERVICE_USER_SUBSCRIBER));
+		adapter.setOutputChannel(inputChannel);
+		adapter.setAckMode(AckMode.MANUAL);
+		return adapter;
+	}
 
-        PubSubInboundChannelAdapter adapter =
-                new PubSubInboundChannelAdapter(pubSubTemplate, Constant.EVENT_SERVICE_PARTNER_SUBSCRIBER);
-        adapter.setOutputChannel(inputChannel);
-        adapter.setAckMode(AckMode.MANUAL);
-        return adapter;
-    }
+	@Bean
+	public PubSubInboundChannelAdapter messageChannelAdapterForPartner(
+			@Qualifier("pubsubInputChannelForPartner") MessageChannel inputChannel, PubSubTemplate pubSubTemplate) {
 
-    @Bean
-    public PubSubInboundChannelAdapter messageChannelAdapterForOffers(
-            @Qualifier("pubsubInputChannelForOffers") MessageChannel inputChannel, PubSubTemplate pubSubTemplate) {
+		PubSubInboundChannelAdapter adapter =
+				new PubSubInboundChannelAdapter(pubSubTemplate, env.getProperty(Constant.EVENT_SERVICE_PARTNER_SUBSCRIBER));
+		adapter.setOutputChannel(inputChannel);
+		adapter.setAckMode(AckMode.MANUAL);
+		return adapter;
+	}
 
-        PubSubInboundChannelAdapter adapter =
-                new PubSubInboundChannelAdapter(pubSubTemplate, Constant.EVENT_SERVICE_OFFERS_SUBSCRIBER);
-        adapter.setOutputChannel(inputChannel);
-        adapter.setAckMode(AckMode.MANUAL);
-        return adapter;
-    }
+	@Bean
+	public PubSubInboundChannelAdapter messageChannelAdapterForOffers(
+			@Qualifier("pubsubInputChannelForOffers") MessageChannel inputChannel, PubSubTemplate pubSubTemplate) {
 
-    @Bean
-    public PubSubInboundChannelAdapter messageChannelAdapterForNotification(
-            @Qualifier("pubsubInputChannelForNotification") MessageChannel inputChannel, PubSubTemplate pubSubTemplate) {
+		PubSubInboundChannelAdapter adapter =
+				new PubSubInboundChannelAdapter(pubSubTemplate, env.getProperty(Constant.EVENT_SERVICE_OFFERS_SUBSCRIBER));
+		adapter.setOutputChannel(inputChannel);
+		adapter.setAckMode(AckMode.MANUAL);
+		return adapter;
+	}
 
-        PubSubInboundChannelAdapter adapter =
-                new PubSubInboundChannelAdapter(pubSubTemplate, Constant.EVENT_SERVICE_NOTIFICATION_SUBSCRIBER);
-        adapter.setOutputChannel(inputChannel);
-        adapter.setAckMode(AckMode.MANUAL);
-        return adapter;
-    }
+	@Bean
+	public PubSubInboundChannelAdapter messageChannelAdapterForNotification(
+			@Qualifier("pubsubInputChannelForNotification") MessageChannel inputChannel, PubSubTemplate pubSubTemplate) {
 
-    @Bean
-    @ServiceActivator(inputChannel = "pubsubInputChannelForLocation")
-    public MessageHandler messageReceiverForLocation() {
-        return message -> {
-            LOGGER.info(Constant.EVENT_SERVICE_LOCATION_SUBSCRIBER + ":  Payload: " + new String((byte[]) message.getPayload()));
-            eventService.saveEventDetails(new String((byte[]) message.getPayload()));
-            AckReplyConsumer consumer =
-                    (AckReplyConsumer) message.getHeaders().get(GcpPubSubHeaders.ACKNOWLEDGEMENT);
-            consumer.ack();
-        };
-    }
+		PubSubInboundChannelAdapter adapter =
+				new PubSubInboundChannelAdapter(pubSubTemplate, env.getProperty(Constant.EVENT_SERVICE_NOTIFICATION_SUBSCRIBER));
+		adapter.setOutputChannel(inputChannel);
+		adapter.setAckMode(AckMode.MANUAL);
+		return adapter;
+	}
 
-    @Bean
-    @ServiceActivator(inputChannel = "pubsubInputChannelForUser")
-    public MessageHandler messageReceiverForUser() {
-        return message -> {
-            LOGGER.info(Constant.EVENT_SERVICE_USER_SUBSCRIBER + ": Payload: " + new String((byte[]) message.getPayload()));
-            eventService.saveEventDetails(new String((byte[]) message.getPayload()));
-            AckReplyConsumer consumer =
-                    (AckReplyConsumer) message.getHeaders().get(GcpPubSubHeaders.ACKNOWLEDGEMENT);
-            consumer.ack();
-        };
-    }
+	@Bean
+	@ServiceActivator(inputChannel = "pubsubInputChannelForLocation")
+	public MessageHandler messageReceiverForLocation() {
+		return message -> {
+			LOGGER.info(env.getProperty(Constant.EVENT_SERVICE_LOCATION_SUBSCRIBER) + ":  Payload: " + new String((byte[]) message.getPayload()));
+			eventService.saveEventDetails(new String((byte[]) message.getPayload()));
+			AckReplyConsumer consumer =
+					(AckReplyConsumer) message.getHeaders().get(GcpPubSubHeaders.ACKNOWLEDGEMENT);
+			consumer.ack();
+		};
+	}
 
-    @Bean
-    @ServiceActivator(inputChannel = "pubsubInputChannelForPartner")
-    public MessageHandler messageReceiverForPartner() {
-        return message -> {
-            LOGGER.info(Constant.EVENT_SERVICE_PARTNER_SUBSCRIBER + ": Payload: " + new String((byte[]) message.getPayload()));
-            eventService.saveEventDetails(new String((byte[]) message.getPayload()));
-            AckReplyConsumer consumer =
-                    (AckReplyConsumer) message.getHeaders().get(GcpPubSubHeaders.ACKNOWLEDGEMENT);
-            consumer.ack();
-        };
-    }
+	@Bean
+	@ServiceActivator(inputChannel = "pubsubInputChannelForUser")
+	public MessageHandler messageReceiverForUser() {
+		return message -> {
+			LOGGER.info(env.getProperty(Constant.EVENT_SERVICE_USER_SUBSCRIBER) + ": Payload: " + new String((byte[]) message.getPayload()));
+			eventService.saveEventDetails(new String((byte[]) message.getPayload()));
+			AckReplyConsumer consumer =
+					(AckReplyConsumer) message.getHeaders().get(GcpPubSubHeaders.ACKNOWLEDGEMENT);
+			consumer.ack();
+		};
+	}
 
-    @Bean
-    @ServiceActivator(inputChannel = "pubsubInputChannelForOffers")
-    public MessageHandler messageReceiverForOffers() {
-        return message -> {
-            LOGGER.info(Constant.EVENT_SERVICE_OFFERS_SUBSCRIBER + ": Payload: " + new String((byte[]) message.getPayload()));
-            eventService.saveEventDetails(new String((byte[]) message.getPayload()));
-            AckReplyConsumer consumer =
-                    (AckReplyConsumer) message.getHeaders().get(GcpPubSubHeaders.ACKNOWLEDGEMENT);
-            consumer.ack();
-        };
-    }
+	@Bean
+	@ServiceActivator(inputChannel = "pubsubInputChannelForPartner")
+	public MessageHandler messageReceiverForPartner() {
+		return message -> {
+			LOGGER.info(env.getProperty(Constant.EVENT_SERVICE_PARTNER_SUBSCRIBER) + ": Payload: " + new String((byte[]) message.getPayload()));
+			eventService.saveEventDetails(new String((byte[]) message.getPayload()));
+			AckReplyConsumer consumer =
+					(AckReplyConsumer) message.getHeaders().get(GcpPubSubHeaders.ACKNOWLEDGEMENT);
+			consumer.ack();
+		};
+	}
 
-    @Bean
-    @ServiceActivator(inputChannel = "pubsubInputChannelForNotification")
-    public MessageHandler messageReceiverForNotification() {
-        return message -> {
-            LOGGER.info(Constant.EVENT_SERVICE_NOTIFICATION_SUBSCRIBER + ": Payload: " + new String((byte[]) message.getPayload()));
-            eventService.saveEventDetails(new String((byte[]) message.getPayload()));
-            AckReplyConsumer consumer =
-                    (AckReplyConsumer) message.getHeaders().get(GcpPubSubHeaders.ACKNOWLEDGEMENT);
-            consumer.ack();
-        };
-    }
+	@Bean
+	@ServiceActivator(inputChannel = "pubsubInputChannelForOffers")
+	public MessageHandler messageReceiverForOffers() {
+		return message -> {
+			LOGGER.info(env.getProperty(Constant.EVENT_SERVICE_OFFERS_SUBSCRIBER) + ": Payload: " + new String((byte[]) message.getPayload()));
+			eventService.saveEventDetails(new String((byte[]) message.getPayload()));
+			AckReplyConsumer consumer =
+					(AckReplyConsumer) message.getHeaders().get(GcpPubSubHeaders.ACKNOWLEDGEMENT);
+			consumer.ack();
+		};
+	}
+
+	@Bean
+	@ServiceActivator(inputChannel = "pubsubInputChannelForNotification")
+	public MessageHandler messageReceiverForNotification() {
+		return message -> {
+			LOGGER.info(env.getProperty(Constant.EVENT_SERVICE_NOTIFICATION_SUBSCRIBER) + ": Payload: " + new String((byte[]) message.getPayload()));
+			eventService.saveEventDetails(new String((byte[]) message.getPayload()));
+			AckReplyConsumer consumer =
+					(AckReplyConsumer) message.getHeaders().get(GcpPubSubHeaders.ACKNOWLEDGEMENT);
+			consumer.ack();
+		};
+	}
 
 }
