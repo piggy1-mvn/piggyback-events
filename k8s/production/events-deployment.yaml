@@ -4,7 +4,7 @@ metadata:
   name: piggyback-events-production
   namespace: production
 spec:
-  replicas: 1
+  replicas: 2
   progressDeadlineSeconds: 10
   template:
     metadata:
