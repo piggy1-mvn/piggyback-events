@@ -32,7 +32,7 @@ public class EventServiceImpl implements EventService {
 	@Override
 	public List<EventEntity> getEvents(String eventType, String partnerId, Date fromDate) {
 		if (CommonUtility.isValidString(eventType) && CommonUtility.isValidString(partnerId) &&(null!=fromDate)) {
-			Date toDate = DateUtils.addMonths(fromDate, -1);
+			Date toDate = DateUtils.addMinutes(fromDate, -15);
 			return eventRepository.getEventsByEventAllFilters(eventType,partnerId,fromDate,toDate);
 		} else if(CommonUtility.isValidString(eventType) && CommonUtility.isValidString(partnerId) ){
 			return eventRepository.getEventsByEventPartnerType(eventType,partnerId);

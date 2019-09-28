@@ -15,7 +15,7 @@ public class EventEntity {
     private String eventId;
     private String eventType;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date timeStamp;
 
     private String partnerId;

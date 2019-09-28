@@ -23,7 +23,7 @@ public class EventsController {
     public ResponseEntity<List<EventEntity>> getEvent(
             @RequestParam(name ="eventType", required = false) String eventType,
             @RequestParam(name="partnerId", required = false) String partnerId,
-            @RequestParam(name="timeStamp", required = false)  @DateTimeFormat(pattern="yyyy-MM-dd") Date timestamp) {
+            @RequestParam(name="timeStamp", required = false)  @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss") Date timestamp) {
 
         List<EventEntity> events = eventService.getEvents(eventType,partnerId,timestamp);
         return ResponseEntity.ok(events);
