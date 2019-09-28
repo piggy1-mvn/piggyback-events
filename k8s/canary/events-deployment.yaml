@@ -13,7 +13,7 @@ spec:
         env: canary
     spec:
       containers:
-      - image: gcr.io/absolute-text-251105/piggy1-events:v6
+      - image: gcr.io/absolute-text-251105/piggy1-events:v7
         name: piggyback-prod-runner-events
         resources:
           limits:
