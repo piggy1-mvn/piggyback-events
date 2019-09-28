@@ -21,8 +21,6 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-
 @Service
 public class EventSubscriber {
 

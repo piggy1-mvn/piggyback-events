@@ -10,6 +10,7 @@ import com.incentives.piggyback.events.repository.EventRepository;
 import com.incentives.piggyback.events.utils.CommonUtility;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -32,7 +33,7 @@ public class EventServiceImpl implements EventService {
 	@Override
 	public List<EventEntity> getEvents(String eventType, String partnerId, Date fromDate) {
 		if (CommonUtility.isValidString(eventType) && CommonUtility.isValidString(partnerId) &&(null!=fromDate)) {
-			Date toDate = DateUtils.addMinutes(fromDate, -15);
+			Date toDate = DateUtils.addMinutes(fromDate, -5);
 			return eventRepository.getEventsByEventAllFilters(eventType,partnerId,fromDate,toDate);
 		} else if(CommonUtility.isValidString(eventType) && CommonUtility.isValidString(partnerId) ){
 			return eventRepository.getEventsByEventPartnerType(eventType,partnerId);
@@ -41,7 +42,7 @@ public class EventServiceImpl implements EventService {
 		}else if(CommonUtility.isValidString(partnerId)){
 			return eventRepository.getEventsByPartnerType(partnerId);
 		}else if(null!=fromDate){
-			Date toDate = DateUtils.addMonths(fromDate, -1);
+			Date toDate = DateUtils.addMinutes(fromDate, -5);
 			return eventRepository.getEventsByTimeStamp(fromDate,toDate);
 		}
 			return eventRepository.findAll();
