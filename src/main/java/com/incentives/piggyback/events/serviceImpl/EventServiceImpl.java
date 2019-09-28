@@ -57,5 +57,4 @@ public class EventServiceImpl implements EventService {
 			throw new PiggyException(ExceptionResponseCode.USER_DATA_NOT_FOUND_IN_REQUEST);
 		}
 	}
-
 }

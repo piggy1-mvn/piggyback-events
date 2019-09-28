@@ -1,10 +1,5 @@
 package com.incentives.piggyback.events.subscriber;
 
-import com.google.cloud.pubsub.v1.AckReplyConsumer;
-import com.incentives.piggyback.common.pubsub.SubscriberHelper;
-import com.incentives.piggyback.events.EventsApplication;
-import com.incentives.piggyback.events.service.EventService;
-import com.incentives.piggyback.events.utils.Constant;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +15,12 @@ import org.springframework.integration.channel.DirectChannel;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
 import org.springframework.stereotype.Service;
+
+import com.google.cloud.pubsub.v1.AckReplyConsumer;
+import com.incentives.piggyback.events.EventsApplication;
+import com.incentives.piggyback.events.service.EventService;
+import com.incentives.piggyback.events.utils.Constant;
+
 
 @Service
 public class EventSubscriber {
