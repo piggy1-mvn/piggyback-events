@@ -21,6 +21,7 @@ import com.incentives.piggyback.events.EventsApplication;
 import com.incentives.piggyback.events.service.EventService;
 import com.incentives.piggyback.events.utils.Constant;
 
+
 @Service
 public class EventSubscriber {
 
