@@ -9,4 +9,5 @@ public interface Constant {
 	String EVENT_SERVICE_PARTNER_SUBSCRIBER = "partner.subscriber.topic";
 	String EVENT_SERVICE_OFFERS_SUBSCRIBER = "offer.subscriber.topic";
 	String EVENT_SERVICE_NOTIFICATION_SUBSCRIBER = "notification.subscriber.topic";
+	String EVENT_SERVICE_ORDER_SUBSCRIBER = "order.subscriber.topic";
 }
