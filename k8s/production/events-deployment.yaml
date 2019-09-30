@@ -10,14 +10,14 @@ spec:
     metadata:
       labels:
         app: piggyback-events
-        env: canary
+        env: production
     spec:
       volumes:
       - name: google-cloud-key
         secret:
           secretName: pubsub-key
       containers:
-      - image: gcr.io/absolute-text-251105/piggy1-events:v10
+      - image: gcr.io/absolute-text-251105/piggy1-events:v11
         name: piggyback-prod-runner-events
         volumeMounts:
         - name: google-cloud-key
