@@ -10,7 +10,7 @@ spec:
     metadata:
       labels:
         app: piggyback-events
-        env: production
+        env: canary
     spec:
       volumes:
       - name: google-cloud-key
