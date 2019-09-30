@@ -21,7 +21,6 @@ import com.incentives.piggyback.events.EventsApplication;
 import com.incentives.piggyback.events.service.EventService;
 import com.incentives.piggyback.events.utils.Constant;
 
-
 @Service
 public class EventSubscriber {
 
@@ -53,6 +52,10 @@ public class EventSubscriber {
 	public MessageChannel pubsubInputChannelForPartner() {
 		return new DirectChannel();
 	}
+	@Bean
+	public MessageChannel pubsubInputChannelForOrder() {
+		return new DirectChannel();
+	}
 
 	@Bean
 	public PubSubInboundChannelAdapter messageChannelAdapterForLocation(
@@ -82,6 +85,17 @@ public class EventSubscriber {
 
 		PubSubInboundChannelAdapter adapter =
 				new PubSubInboundChannelAdapter(pubSubTemplate, env.getProperty(Constant.EVENT_SERVICE_PARTNER_SUBSCRIBER));
+		adapter.setOutputChannel(inputChannel);
+		adapter.setAckMode(AckMode.MANUAL);
+		return adapter;
+	}
+
+	@Bean
+	public PubSubInboundChannelAdapter messageChannelAdapterForOrder(
+			@Qualifier("pubsubInputChannelForPartner") MessageChannel inputChannel, PubSubTemplate pubSubTemplate) {
+
+		PubSubInboundChannelAdapter adapter =
+				new PubSubInboundChannelAdapter(pubSubTemplate, env.getProperty(Constant.EVENT_SERVICE_ORDER_SUBSCRIBER));
 		adapter.setOutputChannel(inputChannel);
 		adapter.setAckMode(AckMode.MANUAL);
 		return adapter;
@@ -138,6 +152,18 @@ public class EventSubscriber {
 	public MessageHandler messageReceiverForPartner() {
 		return message -> {
 			LOGGER.info(env.getProperty(Constant.EVENT_SERVICE_PARTNER_SUBSCRIBER) + ": Payload: " + new String((byte[]) message.getPayload()));
+			eventService.saveEventDetails(new String((byte[]) message.getPayload()));
+			AckReplyConsumer consumer =
+					(AckReplyConsumer) message.getHeaders().get(GcpPubSubHeaders.ACKNOWLEDGEMENT);
+			consumer.ack();
+		};
+	}
+
+	@Bean
+	@ServiceActivator(inputChannel = "pubsubInputChannelForOrder")
+	public MessageHandler messageReceiverForOrder() {
+		return message -> {
+			LOGGER.info(env.getProperty(Constant.EVENT_SERVICE_ORDER_SUBSCRIBER) + ": Payload: " + new String((byte[]) message.getPayload()));
 			eventService.saveEventDetails(new String((byte[]) message.getPayload()));
 			AckReplyConsumer consumer =
 					(AckReplyConsumer) message.getHeaders().get(GcpPubSubHeaders.ACKNOWLEDGEMENT);
