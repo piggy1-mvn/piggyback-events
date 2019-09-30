@@ -92,7 +92,7 @@ public class EventSubscriber {
 
 	@Bean
 	public PubSubInboundChannelAdapter messageChannelAdapterForOrder(
-			@Qualifier("pubsubInputChannelForPartner") MessageChannel inputChannel, PubSubTemplate pubSubTemplate) {
+			@Qualifier("pubsubInputChannelForOrder") MessageChannel inputChannel, PubSubTemplate pubSubTemplate) {
 
 		PubSubInboundChannelAdapter adapter =
 				new PubSubInboundChannelAdapter(pubSubTemplate, env.getProperty(Constant.EVENT_SERVICE_ORDER_SUBSCRIBER));
