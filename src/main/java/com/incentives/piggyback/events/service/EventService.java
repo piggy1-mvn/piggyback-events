@@ -1,14 +1,13 @@
 package com.incentives.piggyback.events.service;
 
-import com.incentives.piggyback.events.dto.EventEntity;
-import com.incentives.piggyback.events.exception.PiggyException;
-
 import java.util.Date;
-import java.util.List;
+
+import com.incentives.piggyback.events.entity.EventResponse;
+import com.incentives.piggyback.events.exception.PiggyException;
 
 public interface EventService {
 
     String saveEventDetails(String event) throws PiggyException;
 
-    List<EventEntity> getEvents(String eventType, String partnerId, Date timestamp);
+    EventResponse getEvents(String eventType, String partnerId, Date timestamp);
 }

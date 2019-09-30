@@ -1,7 +1,6 @@
 package com.incentives.piggyback.events.controller;
 
-import java.util.Date;
-import java.util.List;
+import java.util.Calendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.incentives.piggyback.events.dto.EventEntity;
+import com.incentives.piggyback.events.entity.EventResponse;
 import com.incentives.piggyback.events.service.EventService;
 
 @RestController
@@ -20,10 +19,9 @@ public class EventsController {
 	private EventService eventService;
 
 	@GetMapping
-	public List<EventEntity> getEvent(
+	public EventResponse getEvent(
 			@RequestParam(name ="eventType", required = false) String eventType,
-			@RequestParam(name="partnerId", required = false) String partnerId,
-			@RequestParam(name="timeStamp", required = false)  Long timestamp) {
-		return eventService.getEvents(eventType,partnerId, new Date(timestamp));
+			@RequestParam(name="partnerId", required = false) String partnerId) {
+		return eventService.getEvents(eventType,partnerId, Calendar.getInstance().getTime());
 	}
 }
