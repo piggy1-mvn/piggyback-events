@@ -19,7 +19,7 @@ import com.incentives.piggyback.events.utils.CommonUtility;
 
 @Service
 public class EventServiceImpl implements EventService {
-	
+
 	@Autowired
 	private EventRepository eventRepository;
 
@@ -36,17 +36,10 @@ public class EventServiceImpl implements EventService {
 		if (CommonUtility.isValidString(eventType) && CommonUtility.isValidString(partnerId) &&(null!=fromDate)) {
 			Date toDate = DateUtils.addMinutes(fromDate, -5);
 			eventResponse.setEventEntity(eventRepository.getEventsByEventAllFilters(eventType,partnerId,fromDate,toDate));
-		} else if(CommonUtility.isValidString(eventType) && CommonUtility.isValidString(partnerId) ){
-			eventResponse.setEventEntity(eventRepository.getEventsByEventPartnerType(eventType,partnerId));
-		} else if(CommonUtility.isValidString(eventType)){
-			eventResponse.setEventEntity(eventRepository.getEventsByEventType(eventType));
-		}else if(CommonUtility.isValidString(partnerId)){
-			eventResponse.setEventEntity(eventRepository.getEventsByPartnerType(partnerId));
-		}else if(null!=fromDate){
+		} else if(null!=fromDate){
 			Date toDate = DateUtils.addMinutes(fromDate, -5);
 			eventResponse.setEventEntity(eventRepository.getEventsByTimeStamp(fromDate,toDate));
 		}
-		eventResponse.setEventEntity(eventRepository.findAll());
 		return eventResponse;
 	}
 
