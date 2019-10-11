@@ -19,7 +19,7 @@ import java.util.Map;
 
 @EnableKafka
 @Configuration
-public class KafkaReceiverConfigFromOrder {
+public class KafkaReceiverConfig {
 
     @Autowired
     private Environment env;
@@ -30,7 +30,7 @@ public class KafkaReceiverConfigFromOrder {
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, env.getProperty(Constant.KAFKA_BOOTSTRAP_ADDRESS));
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, Constant.EVENT_SERVICE_ORDER_SUBSCRIBER);
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, Constant.EVENT_SERVICE_SUBSCRIBER);
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
         return props;
     }

@@ -9,14 +9,14 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 
 @Service
-public class KafkaReceiverFromPartner {
+public class KafkaReceiver {
 
     @Autowired
     private EventService eventService;
 
-    private static final Logger LOG = LoggerFactory.getLogger(KafkaReceiverFromPartner.class);
+    private static final Logger LOG = LoggerFactory.getLogger(KafkaReceiver.class);
 
-    @KafkaListener(topics = "partnerEvents")
+    @KafkaListener(topics = {"locationEvents" , "offerEvents", "userEvents", "partnerEvents", "notificationEvents", "orderEvents"})
     public void listen(@Payload String message) {
         LOG.info("received message='{}'", message);
         eventService.saveEventDetails(message);
