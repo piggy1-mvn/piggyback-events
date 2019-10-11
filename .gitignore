@@ -3,3 +3,4 @@ target/
 events.iml
 .classpath
 .project
+.settings/
