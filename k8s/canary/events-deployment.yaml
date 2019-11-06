@@ -13,7 +13,7 @@ spec:
         env: canary
     spec:
       containers:
-      - image: gcr.io/omega-palace-254907/piggy1-events:v11
+      - image: gcr.io/omega-palace-254907/piggy1-events:v12
         name: piggyback-prod-runner-events
         env:
           - name: JASYPT_ENCRYPTOR_PASSWORD
